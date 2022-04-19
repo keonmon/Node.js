@@ -1,8 +1,12 @@
 // 03_Object.js
 
 // 1. 자바 스크립트의 '객체' 생성
-// { } 중괄호 안에 key(요소'의 이름)와 value(요소의 값)이 ':'(콜론)으로 구분되어서 존재하는 값들의 집합.
-const product = {name:'냉장고', 제조사:'대한민국'};
+// { } 중괄호 안에 key(요소의 이름)와 value(요소의 값)이 ':'(콜론)으로 구분되어서 존재하는 값들의 집합.
+
+const product = {
+    name:'냉장고', 
+    제조사:'대한민국'
+};
 // 변수하나 안에 한 개 이상의 키와 값이 조합되어 데이터를 넣어 사용한다.
 // 객체안에 있는 키와 값의 조합 하나를 속성이라고 하며, 각 속성은 콤마(,)로 구분한다.
 
@@ -13,7 +17,7 @@ console.log(product.name);
 const product2 = {};
 console.log(product2);
 
-// 자바스크립트의 객체는 별도의 클래스 선업없이, { }중괄호 안에 직접 속성들을 넣는 순간 '객체(Object)로 인식'되어 사용되어진다.
+// 자바스크립트의 객체는 별도의 클래스 선언없이, { }중괄호 안에 직접 속성들을 넣는 순간 '객체(Object)로 인식'되어 사용되어진다.
 
 
 // 2. 객체의 속성과 메서드
@@ -29,8 +33,8 @@ var object = {
         console.log('멤버 함수를 실행합니다.');
     }
 };
-object.method();                // 함수의 이름에 괄호를 붙여서 함수의 내용을 실행.
-console.log(object.method);     //[Function:method]출력
+object.method();                // 함수의 이름에 괄호를 붙여서 함수의 내용을 실행.  // 멤버 함수를 실행합니다.
+console.log(object.method);     // [Function:method]출력
 console.log(object.method());   // 함수의 내부에 있는 console.log('멤버함수를 실행합니다.'); '멤버 함수를 실행합니다.'를 출력.
                                 // 그리고 console.log(object.method());의 console.log()는 undefined출력
 console.log(object.useNumber);
@@ -48,13 +52,13 @@ console.log(person.name);
 person.eat('스파게티');
 
 
-//멤버 함수가 멤버변수로의 접근
-// - this 키워드 : 자바스클비트는 멤버 변수에 접근을 위해서 반드시 this 키워드를 써야한다.
+// 멤버 함수가 멤버변수로의 접근
+// - this 키워드 : 자바스크립틐는 멤버 변수에 접근을 위해서 반드시 this 키워드를 써야한다.
 var person = {
     name:'홍길동',
     eat:function(food){
         console.log( this.name + '이/가 ' + food + '을/를 먹었습니다.');
-        console.log(`'${this.name}'이/가 '${food}'을/를 먹었습니다.`);
+        console.log(`'${this.name}'이/가 '${food}'을/를 먹었습니다.`);      // template literals
     }
 };
 person.eat('김밥');
@@ -70,12 +74,12 @@ var product3 = {
     subscripton:true
 };
 console.log(product3.name);
-//객체 이름을 반복문에 대입하여 각 멤버 변수들의 값에 접근한다ㅏ.
+// 객체명을 반복문에 대입하여 각 멤버 변수들의 값에 접근한다.
 for(var key in product3){
     var output = `${key} : ${product3[key]}`;
     console.log(output);
-}   // product3 객체에 있는 모든 멤버 변수이름을 key라는 변수에 저장하면서 반복실행(멤버변수 개수만큼)
-// product[key] key값을 이용한 멤버변수 값들에 접근 -> 출력
+}   // product3 객체에 있는 모든 멤버 변수명을 key라는 변수에 저장하면서 반복실행(멤버변수 개수만큼)
+// product[key] key값을 이용해 멤버변수 값들에 접근 -> 출력
 
 
 console.log();
@@ -96,14 +100,16 @@ console.log()
 // - with : 복잡하게 사용해야 하는 코드를 짧게 줄여주는 키워드
 
 // . with 키워드를 사용하지 않은 경우
-var write = '';
-with(student){
-    write += '이름 : ' + student.이름 + '\n';
-    write += '국어 : ' + student.국어 + '\n';
-    write += '수학 : ' + student.수학 + '\n';
-    write += '영어 : ' + student.영어 + '\n';
-    write += '과학 : ' + student.과학 + '\n';
+var student={
+    이름:'홍길동',
+    국어:92, 수학:98, 영어:96, 과학:98
 };
+var write = '';
+write += '이름 : ' + student.이름 + '\n';
+write += '국어 : ' + student.국어 + '\n';
+write += '수학 : ' + student.수학 + '\n';
+write += '영어 : ' + student.영어 + '\n';
+write += '과학 : ' + student.과학 + '\n';
 console.log(write);
 
 // . with 키워드를 사용한 경우
@@ -115,7 +121,7 @@ with(student){
     write += '영어 : ' + 영어 + '\n';
     write += '과학 : ' + 과학 + '\n';
 };
-
+console.log(write);
 
 
 console.log();
@@ -136,6 +142,11 @@ for(var key in student){
 }
 
 console.log();
+
+// 객체 안에 변수로 함수를 선언하는 경우
+// var student = {이름 : '홍길동',
+// toString:function(){ }};
+
 // 동적으로 메서드 추가
 student.toString = function(){
     for(var key in this){       //자신의 객체를 for문에 적용
@@ -156,12 +167,12 @@ console.log('\n');
 
 console.log();
 // 6. 생성자 함수 : new 키워드를 사용해 객체를 생성할 수 있는 함수.
-// - 생성자 함수를 사용한 객체의 생성과 출력. 그냥 함수를 사용해 객체를 리턴하는 방법과 차이가 없어보인다.
+// - 생성자 함수를 사용한 객체의 생성과 출력. 일반 함수를 사용해 객체를 리턴하는 방법과 차이가 없어보인다.
 
 var student1 = {이름 : '홍길동'};
 var student2 = {이름 : '홍길동', 성별:'남'};
 var student3 = {이름 : '홍길동', 성별:'남', 나이:20};
-// 위 세 객체는 모두 '형태가 다른 객체'이다.
+// 위 세 객체는 모두 형태가 다른 '객체'이다.
 
 // 함수 안에 this를 이용한 변수에 값을 넣으면 그 이름의 멤버변수가 만들어지고, 최종 그 변수들을 멤버로 하는 객체가 만들어지는 '생성자 함수'로 인식된다.
 function Student(name, korean, math, english, science){
@@ -184,12 +195,12 @@ function Student(name, korean, math, english, science){
 }       // 객체가 만들어지기 위한 '생성자 함수'
 
 var std1 = new Student('홍길동', 88,78,98,87);
-var std2 = new Student('홍길성', 43,46,68,85);
-var std3 = new Student('홍길남', 84,64,42,81);
+var std2 = new Student('홍길남', 77,65,89,65);
+var std3 = new Student('홍길서', 99,74,95,78);
 
-console.log(std1.toString());
-console.log(std2.toString());
-console.log(std3.toString());
+console.log( std1.toString() );
+console.log( std2.toString() );
+console.log( std3.toString() );
 
 
 
@@ -264,9 +275,9 @@ function Rectangle(w, h){
 Rectangle.prototype.getArea = function(){
     return this.getWidth() * this.getHeight();
 }
-var Rectangle = new Rectangle(5,7);
-Rectangle.setWidth(8);
-console.log('AREA : ' + Rectangle.getArea());
+var rectangle = new Rectangle(5,7);
+rectangle.setWidth(8);
+console.log('AREA : ' + rectangle.getArea());
 console.log('\n');
 
 
