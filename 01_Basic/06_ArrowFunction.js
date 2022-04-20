@@ -46,30 +46,35 @@ function not1(x){
     return !x;
 }
 console.log(not1(true));    // false
+
 const not2 = x => !x;
 // const not2 = (x) => !x;
 console.log( not2(false) );  // true
 
 
 
-// 매개변수 없고 리턴값이 없는 함수
+// 매개변수와 리턴값이 없는 함수
 const func1 = () => {
     console.log('매개변수와 리턴값이 없는 함수');
 }
-func1();
+func1();    // 매개변수와 리턴값이 없는 함수
+
 
 //매개변수는 있고 리턴값이 없는 함수
 const func2 = (x,y) => {
-    console.log(`매개변수( ${x}, ${y})있고 리턴값 없는 함수`);
+    console.log(`매개변수(${x}, ${y})있고 리턴값 없는 함수`);
 }
-func2(10,20);
+func2(10,20);   // 매개변수(10, 20)있고 리턴값 없는 함수
+
 
 // 매개변수와 리턴값이 있는 함수
 const func3 = (x,y) => {
-    console.log(`매개변수 (${x}, ${y})있고 리턴값이 있는 함수`);
+    console.log(`매개변수 (${x}, ${y})와 리턴값이 있는 함수`);
     return x+y;
 }
 console.log('리턴값 : ' + func3(10, 20));
+// 매개변수 (10, 20)와 리턴값이 있는 함수
+// 리턴값 : 30
 
 
 //매개변수가 없고 리턴값이 있는 함수
@@ -78,10 +83,13 @@ const func4 = () => {
     return 100;
 }
 console.log('리턴값 : '+func4(10,20));
+// 매개변수가 없고 리턴값이 있는 함수
+// 리턴값 : 100
+
 
 //매개변수와 상관없이 단순 리턴값만 있는 함수 : {}가 없는 함수
 const func5 = (x,y) => x+y;
 // const func5 = (x,y) => (x+y);
-console.log(func5(10,50));
+console.log(func5(10,50));  // 60
 
 

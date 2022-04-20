@@ -12,23 +12,23 @@
 // const pm = new Promise( (resolve, reject ) => { } );
 // 객체 변수의 이름 pm
 
-
+/*
 // 전달인수로 전달되는 익명함수의 내용
-//const condition = true;
-//(resolve, reject) => {
-//    if(condition) resolve('성공');
-//    else reject('실패');
-//}
+const condition = true;
+(resolve, reject) => {
+    if(condition) resolve('성공');
+    else reject('실패');
+}
 // 익명함수에서 실행된 결과의 값이나 상태에 따라 resolve()함수 또는 reject() 함수를 실행한다.
 // 이때 문자로 resolve와 reject에 전달인수로 전달하여 결과가 필요한 곳에서 그 데이터를 꺼내 쓸 수 있게 한다.
 // 위 예는 '성공' 또는 '실패'가 전달된다.
 
-//함수안에서 반드시 resolve() 또는 reject가 호출된다.
+// 함수안에서 반드시 resolve() 또는 reject()가 호출된다.
 // if문이나 선택실행에 적용하여 둘 중 하나만 실행하여도 되고, 무조건 resolve()나 reject() 하나만 실행하기도 한다.
 
-/*
-//let condition = false;
-condition = true;
+
+let condition = false;
+// condition = true;
 const pm = new Promise(
     // 전달인수는 resolve, reject
     (resolve, reject ) => {
@@ -51,6 +51,7 @@ console.log('딴짓');
 console.log('딴짓');
 console.log('딴짓');
 console.log('딴짓');
+
 // 이제 결과를 이용한 작업을 시작한다.
 // then과 catch와 finally에 익명함수가 전달인수로 전달되어 실행되게 한다.
 //.then( (message)=>{ })
@@ -68,7 +69,7 @@ pm
     });
 
 
-
+*/
 
 
 console.log();
@@ -83,6 +84,9 @@ const printString = (string, callback) => {
 // printString('A', function() => { printString ("B", function()=>{} ); } );
 printString('A', () => {printString ("B", ()=>{}); } );
 
+
+
+/*
 
 //동기 실행
 console.log('작업 시작');
@@ -172,7 +176,7 @@ pm
         .catch((error)=>{
             console.error(error);
         });
-*/
+
 
 // 연속 Promise()의 then과 resolve 사용
 const pm1 = new Promise((resolve, reject)=>{
@@ -198,3 +202,6 @@ pm1
     .catch((error)=>{
         console.error(error);
     });
+
+    
+*/

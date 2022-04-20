@@ -239,6 +239,7 @@ Student.prototype.toString = function(){
     return '이름 : ' + this.name + ',  총점 : ' + this.getSum() + ',  평균 : ' + this.getAvg() + ',   basicLanguage : ' + this.basicLanguage;
 
 }
+
 console.log();
 // 새로 추가된 멤버변수 basicLanguage 변수의 값을 전달인수로 전달해서 초기화할 수는 없다.
 std1 = new Student('홍길서', 95,43,75,43);  // basicLanguage의 값은 100이다.
@@ -252,13 +253,19 @@ console.log(std1.toString());
 // (1). 객체를 먼저 만들고, 그 객체에 toString 멤버 메서드 추가
 var std1 = new Student('홍길동', 88,85,53,22);
 std1.toString = function(){  }
+console.log(std1);
 // 결과 : 현재 객체에만 toString 추가
 
 
 // (2).생성자에 toString 추가하고 객체 생성
 Student.prototype.toString = function(){  }
 var std1 = new Student('홍길동', 88,85,53,22);
-// 결과 : 앞으로 Stduent 생성자를 이용해서 만들어지는 모든 객체에 toString이 추가된다.
+console.log(std1);
+console.log(Student.prototype);
+// 결과 : 앞으로 Stduent 생성자를 이용해서 만들어지는 모든 객체에 toString이 추가된다. 
+// (직접적으로 보이지는 않지만 함수를 사용할 수 있다.)
+
+console.log(std1.toString());
 
 
 console.log();
@@ -266,24 +273,26 @@ console.log();
 function Rectangle(w, h){
     var width = w;
     var height = h;
-    this.getWidth = function() {return width;}
-    this.getHeight = function() {return height;}
-    this.setWidth = function(value) {width = value;}
-    this.setHeight = function(value) {height = value;}
+    this.getWidth = function() { return width; }
+    this.getHeight = function() { return height; }
+    this.setWidth = function(value) { width = value; }
+    this.setHeight = function(value) { height = value; }
 }
 
+// 넓이를 구하는 getArea()를 프로토타입(유전자)에 생성
 Rectangle.prototype.getArea = function(){
     return this.getWidth() * this.getHeight();
 }
-var rectangle = new Rectangle(5,7);
-rectangle.setWidth(8);
+
+var rectangle = new Rectangle(5,7);     // 객체 생성
+rectangle.setWidth(8);  // width 5 -> 8
 console.log('AREA : ' + rectangle.getArea());
 console.log('\n');
 
 
 //Rectangle 생성자를 상속
 function Square(length){
-    this.base = Rectangle;
+    this.base = Rectangle;  // base속성에 부모 생성자를 담는다.
     // 전달된 length 값을 base 생성자의 w,h에 같은 값으로 전달
     this.base(length, length);
 }
@@ -301,12 +310,14 @@ console.log('rectangle AREA : ' + rectangle.getArea())
 console.log('square AREA : ' + square.getArea())
 
 
+
 // 10. Object 객체
 // - toString() 메서드.
 // - 객체를 문자열로 변환할 때 자동으로 호출
 var obj = new Object();
-console.log(obj); // {}
-console.log(obj.toString()); // [object Object]
+
+console.log(obj);               // {}
+console.log(obj.toString());    // [object Object]
 
 // - toString() 메서드 재정의
 var student = {
@@ -314,5 +325,6 @@ var student = {
     grade:'고등학교 1학년',
     toString:function(){ return this.name + ':' + this.grade;}
 };
+
 console.log(student);               // Object객체가 갖고있는 toString이 모든 멤버를 출력
 console.log(student.toString());    // 재정의된 toString이 함수안의 내용을 리턴 또는 실행
