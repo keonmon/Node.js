@@ -65,7 +65,7 @@
 
         async function getUsers(){
             try{
-                // get 메서드 방식의 /users 요청 , 결과형식 json형식
+                // get 메서드 방식의 /users 요청 , 결과형식 'json형식'
                 const res = await axios.get('/users');
 
                 const users = res.data; // 요청에 대한 반환(리턴) 값을 객체 형식으로 변환 (키 : 값)
@@ -74,7 +74,7 @@
 
                 //users 변수에 있는 키값들을 전달인수로 하여 키값 개수만큼 반복실행
                 Object.keys(users).map( function(key){
-                    // users에서 key값들을 추출 -> 각 key별로 function(key){}를 실행
+                    // users에서 key값들을 추출 -> 각 key별로 function(key){ }를 실행
                     // 추출된 키들 중 하나에 대해 실행될 함수. 
                     // map에 의해 키 개수만큼 실행
                     const userDiv = document.createElement('div');  // div태그 생성
@@ -84,7 +84,7 @@
                     // 수정버튼 생성
                     const edit = document.createElement('button');  //<button></button>
                     edit.textContent = '수정';  // 버튼에 쓰여질 라벨
-                     edit.addEventListener('click', async ()=>{
+                    edit.addEventListener('click', async ()=>{
                         const name = prompt('바꿀 이름을 입력하세요');  //수정할 이름 입력
                         if(!name){
                             return alert('이름을 반드시 입력해야 합니다.')
@@ -100,7 +100,7 @@
                     // 삭제버튼 생성
                     const remove = document.createElement('button');
                     remove.textContent = '삭제';
-                   edit.addEventListener('click', async ()=>{
+                    remove.addEventListener('click', async ()=>{
                         try{
                             await axios.delete('/user/'+key);
                             getUsers();
@@ -109,17 +109,15 @@
                         }
                     });
 
-                    userDiv.appendChild(span);                      // div안에 span 삽입
-                    userDiv.appendChild(edit);                      // div안에 edit버튼 삽입
-                    userDiv.appendChild(remove);                      // div안에 remove버튼 삽입
-                    list.appendChild(userDiv);                      // div태그를 list 태그에 삽입
+                    userDiv.appendChild(span);      // div안에 span 삽입
+                    userDiv.appendChild(edit);      // div안에 edit버튼 삽입
+                    userDiv.appendChild(remove);    // div안에 remove버튼 삽입
+                    list.appendChild(userDiv);      // div태그를 list 태그에 삽입
                 }  );
 
             }catch(err){
-                console.error(err);
             }
         }
-
 
         window.onload = getUsers;
     </script>

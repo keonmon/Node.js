@@ -3,17 +3,16 @@
 const http = require('http');
 const fs = require('fs').promises;
 
-let users = {};
+let users = {};     // 입력폼에서 등록된 이름들이 담길 객체
 
 // (req, res)=>{ } : 클라이언트로부터 현재 서버로 요청이 들어오면 실행되는 익명함수.
-
 // ()=>{ console.log('8090포트에서 서버가 대기중입니다.') }  : 서버가 처음 실행되어서 대기상태로 갈 때 한번 실행되는 익명함수. (생략될 수 있다)
 
 http.createServer( async (req, res)=>{
     try{
-        //res.writeHead(200, {'Content-Type':'tet/html; charset=utf-8'});
-        //res.write('<h2>안녕하세요</h2>');
+        
         if(req.method=='GET'){      //조회(SELECT)용도로 쓰임
+
             if(req.url === '/'){
                 //fs.readFile('./05_Front.html').then((data)=>{});
                 const data = await fs.readFile('./05_Front.html');
@@ -33,6 +32,7 @@ http.createServer( async (req, res)=>{
             }
 
         }else if(req.method=='POST'){   //로그인 또는 INSERT 용도로 쓰임
+
             if(req.url === '/user'){
                 // req에 전송된 자료(name)을 Stream형식으로 받아 body변수에 넣는다.
                 let body = '';
@@ -57,6 +57,7 @@ http.createServer( async (req, res)=>{
                 // 그 여러 실행들이 실행되고 리턴 & 종료된다.
             }
         }else if(req.method=='PUT'){    //특정 자료를 수정(UPDATE)할 때
+
             // 요청내용 : axios.put('/user/'+key, {name});
             // console.log(req.url); /user/151232355243
             if(req.url.startsWith('/user/')){
@@ -67,34 +68,29 @@ http.createServer( async (req, res)=>{
                     body += data;
                 });
                 return req.on('end', ()=>{
-                    users[key] = JSON.parse(body);
-                    res.writeHead(201, {'Content-Type':'text/plain; charset=utf-8'});
-                    res.end('ok'); 
+                    users[key] = JSON.parse(body).name;
+                    res.writeHead(200, {'Content-Type':'text/plain; charset=utf-8'});
+                    return res.end('수정 ok'); 
                 });
             }
 
-        }else if(req.method=='DELETE'){ //DELETE 용도로 사용
+        }else if(req.method == 'DELETE'){ //DELETE 용도로 사용
 
             if(req.url.startsWith('/user/')){
                 const key = req.url.split('/')[2];
                 delete users[key];
-                res.writeHead(201, {'Content-Type':'text/plain; charset=utf-8'});
-                res.end('ok');
+                res.writeHead(200, {'Content-Type':'text/plain; charset=utf-8'});
+                return res.end('삭제 ok');
             }
-
         }
         
         res.writeHead(404);
         return res.end('NOT FOUND');
 
-
     }catch(err){
-        console.error(error);
+        console.error(err);
         res.writeHead(500, {'Content-type':'text/plain; charset=utf-8'});
         res.end(err.message);
     }
-} )
-.listen(8090, ()=>{
-    console.log('8090포트에서 서버가 대기중입니다.')
-});
+} ).listen(8090, ()=>{ console.log('8090포트에서 서버가 대기중입니다.'); });
 

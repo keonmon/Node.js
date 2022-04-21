@@ -19,6 +19,7 @@ http.createServer(async (req, res)=>{
 }).listen(8081, ()=>{
     console.log('8081번 포트에서 서버 대기중입니다.');
 } );
+
 // http 상태 코드
 // 2XX : 서버 전송 정상 완료.
 // 3XX : 리다이렉션(다른페이지로 이동)을 알리는 상태
