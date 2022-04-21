@@ -28,19 +28,100 @@
         <form id="form">   
             <input type="text" id="username">
             <button type="submit">등록</button>
-        </form> <!-- form의 순수한 submit이벤트를 이용하면 페이지 전환이 일어난다.  
-        페이지 전환 없이 등록 절차 실행 후 현재 위치로 되돌아오기 위해 axios 객체를 이용한다.
+        </form> <!-- 일반적으로 form의 submit이벤트를 이용하면 페이지 전환이 일어난다. (전송-처리-새로운 페이지 로딩 의 과정을 거치며 페이지 전환이 일어난다.)  
+        페이지 전환 없이 등록 절차 실행 후 현재 위치로 되돌아오기 위해 axios 객체를 이용한다.(전송-처리-현재페이지복귀) 
+        자바스크립트의 이벤트리스너와 axios 객체를 이용해 등록처리를 할 예정
         submit 버튼이 클릭되는 이벤트를 자바스크립트의 이벤트로 처리하고, axios 객체가 유저 등록 절차를 실행한다.-->
     </div>
     <div id="list"></div>
-    <script type="text/javascript">
-        // addEventListener : 클릭 또는 더블클릭 또는 현재의 form태그에서 있을 수 있는 submit과 같은 이벤트가 발생하면 전달인수로 전달된 익명함수를 실행해주는 함수(전달인수 : 이벤트 이름과 익명함수를 함께 전달해준다.) id가 form인 개체에 submit이벤트가 일어나면, (e)=>{} 익명함수가 실행된다. e변수에는 이벤트의 주인공인 form이 전달되어 함수가 실행된다.
-        document.getElementById('form').addEventListener('submit', (e)=>{ 
-            e.preventDefault(); //form의 이벤트(submit)가 계속 진행되면 화면전환이 일어나므로, 이벤트동작(submit)을 멈춤
-            const name = e.target.username.value;
-            console.log(name);
+    <!-- 스크립트를 이용한 이벤트 리스너는 head부분에 정의하면 실행에 오류가 많다, 따라서 지금처럼 body부분에 정의한다. -->
+   <script type="text/javascript">
+       // addEventListener : 클릭 또는 더블클릭 또는 현재의 form태그에서 있을 수 있는 submit과 같은 이벤트가 발생하면 전달인수로 전달된 익명함수를 실행해주는 함수(전달인수 : 이벤트 이름과 익명함수를 함께 전달해준다.) id가 form인 개체에 submit이벤트가 일어나면, (e)=>{} 익명함수가 실행된다. e변수에는 이벤트의 주인공인 form이 전달되어 함수가 실행된다.
+
+       // form이 submit되는 때를 잡아 실행될 이벤트 리스너 설정
+       document.getElementById('form').addEventListener('submit', async (event)=>{ 
+           // 현재 익명함수에서는 document.getElementById('form')을 부르기 위한 이름이 없으므로, 함수의 매개변수로 event를 만들고 이용한다. 
+           // event <- document.getElementById('form')
+           event.preventDefault(); //form의 이벤트(submit)가 계속 진행되면 화면전환이 일어나므로, 이벤트동작(submit)을 멈춤
+            const name = event.target.username.value;
+            //alert(name);
+
+            if( !name ){
+                return alert('이름을 입력하세요');
+            }
+            try{
+                await axios.post('/user', {name});
+                // axios의 특성상 서버에서 보내오는 응답은 현재 위치로 응답되어져 복귀한다.
+                //const data = await axios.post('/user', {name});  <- 반환되는 값이 있을 경우 처리방법
+
+                //복귀 후 해야할 일 : 현재 등록된 user들을 조회해서 화면에 표시한다.
+                // 이름이 보여질 곳 : <div id="list"></div>
+                getUsers();
+            }catch(err){
+                console.error(error);
+            }
+            event.target.username.value = '';
         });
 
+        async function getUsers(){
+            try{
+                // get 메서드 방식의 /users 요청 , 결과형식 json형식
+                const res = await axios.get('/users');
+
+                const users = res.data; // 요청에 대한 반환(리턴) 값을 객체 형식으로 변환 (키 : 값)
+                const list = document.getElementById('list');
+                list.innerHTML = '';
+
+                //users 변수에 있는 키값들을 전달인수로 하여 키값 개수만큼 반복실행
+                Object.keys(users).map( function(key){
+                    // users에서 key값들을 추출 -> 각 key별로 function(key){}를 실행
+                    // 추출된 키들 중 하나에 대해 실행될 함수. 
+                    // map에 의해 키 개수만큼 실행
+                    const userDiv = document.createElement('div');  // div태그 생성
+                    const span = document.createElement('span');    // span태그 생성
+                    span.textContent = users[key];                  // span태그 안에 키값으로 얻어낸 users값을 삽입
+
+                    // 수정버튼 생성
+                    const edit = document.createElement('button');  //<button></button>
+                    edit.textContent = '수정';  // 버튼에 쓰여질 라벨
+                     edit.addEventListener('click', async ()=>{
+                        const name = prompt('바꿀 이름을 입력하세요');  //수정할 이름 입력
+                        if(!name){
+                            return alert('이름을 반드시 입력해야 합니다.')
+                        }
+                        try{
+                            await axios.put('/user/' + key, {name});
+                            getUsers();
+                        }catch(err){
+                            console.error(err);
+                        }
+                    });
+                
+                    // 삭제버튼 생성
+                    const remove = document.createElement('button');
+                    remove.textContent = '삭제';
+                   edit.addEventListener('click', async ()=>{
+                        try{
+                            await axios.delete('/user/'+key);
+                            getUsers();
+                        }catch(err){
+                            console.error(err);
+                        }
+                    });
+
+                    userDiv.appendChild(span);                      // div안에 span 삽입
+                    userDiv.appendChild(edit);                      // div안에 edit버튼 삽입
+                    userDiv.appendChild(remove);                      // div안에 remove버튼 삽입
+                    list.appendChild(userDiv);                      // div태그를 list 태그에 삽입
+                }  );
+
+            }catch(err){
+                console.error(err);
+            }
+        }
+
+
+        window.onload = getUsers;
     </script>
 </body>
 </html>
