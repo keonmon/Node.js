@@ -5,13 +5,17 @@ const morgan = require('morgan');
 
 const app = express();
 
+// 추가모듈 설정
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+// 포트설정
 app.set('port', process.env.PORT || 3000);
 
+// 라우팅
+// 루트 라우터
 app.get('/', (req, res)=>{
 
     if(req.cookies.id){
@@ -19,9 +23,9 @@ app.get('/', (req, res)=>{
     } else {
         res.sendFile(path.join(__dirname, '/index.html'));
     }
-
 });
 
+// 로그인 라우터
 app.post('/login',(req,res)=>{
     const id = req.body.id;
     const pw = req.body.pw;
@@ -46,9 +50,9 @@ app.post('/login',(req,res)=>{
     }else {
         return res.json({msg:'알수없는 오류'});
     }
-
 });
 
+// 로그아웃 라우터
 app.get('/logout', (req,res)=>{
     res.clearCookie('id', req.cookies.id,{
         httpOnly : true,
@@ -56,6 +60,7 @@ app.get('/logout', (req,res)=>{
     });
     res.redirect('/');
 })
+
 
 app.listen(app.get('port'), ()=>{
     console.log(app.get('port'), '번 포트에서 대기 중');

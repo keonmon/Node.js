@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>index.html</title>
+    <!-- axios -->
     <script src="https://unpkg.com/axios@0.25.0/dist/axios.min.js"></script>
 </head>
 <body>
@@ -17,8 +18,10 @@
 
     <script type="text/javascript">
         document.getElementById('form').addEventListener('submit', async (e)=>{
-            e.preventDefault();
+
+            e.preventDefault(); // 이벤트 중단(submit)
             
+            // 이벤트가 발생한 요소 값 저장 (target속성)
             const id = e.target.id.value;
             const pw = e.target.pw.value;
 
@@ -29,8 +32,11 @@
                 alert("비밀번호를 입력하세요");
                 return;
             }
+
             try{
+                // axios로 '/login' 라우터에서 가져온 값을 res에 담기
                 const res = await axios.post('/login', {id, pw});
+
                 // 로그인이 잘 되었다면?
                 if(res.data.msg == 'ok') location.href='/';
                 document.getElementById('message').innerHTML = res.data.msg;
@@ -38,6 +44,7 @@
             }catch(err){
                 console.error(err);
             }
+            
             e.target.id.value='';
             e.target.pw.value='';
         });

@@ -1,4 +1,6 @@
 const express = require('express');
+
+// 추가모듈 require 
 const path=require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -9,14 +11,17 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
+
+// static( 정적 )폴더 지정
 app.use('/', express.static(path.join(__dirname, 'uploads')));
 
+
 // 업로드를 하려면 업로드된 파일이 저장될 폴더를 지정해야한다.
-// 지난 프로젝트러첢 폴더를 직접 만들지는 않고, 
-// 'fs모듈을 활용'하여 이용하려는 폴더가 있으면 그 폴더를 사용,
+// 지난 프로젝트처럼 폴더를 직접 만들지는 않고, 
+// 'fs모듈을 활용'하여 이용하려는 폴더가 있으면 그 폴더를 사용하며,
 // 없으면 새로 생성하는 기능을 사용한다.
 // 파일 폴더와 같은 외부의 리소스를 다루는 작업은 명령 오류와 상관없이 디스크 상태에 따라 오류가 발생할 수 있으며, 스스로 예외처리를 해준다.
-// 특히 직음은 readdirSync가 실행될 때 해당 폴더가 없다면 에러가 발생하므로 그에 대한 처리로 예외처리를 이용한다.
+// 특히 지금은 readdirSync가 실행될 때 해당 폴더가 없다면 에러가 발생하므로 그에 대한 처리로 예외처리를 이용한다.
 try{
     fs.readdirSync('uploads');
 }catch(err){
@@ -24,12 +29,14 @@ try{
     fs.mkdirSync('uploads');
 }
 
-// 현제 프로젝트에서 사용할 multer 객체를 생성한다. 객체이름은 upload
+
+// 현재 프로젝트에서 사용할 multer 객체를 생성한다. 객체이름은 upload
 // multer함수에 전달인수로 객체 하나를 전달하는데 그 객체에는 storage와 limits라는 속성이 포함된다.
 /*
 const upload = multer({
-    storage:multer.diskStorage(),
-    limits : {},
+    // storage : multer.diskStorage()로 저장위치(destination), 파일명(filename) 옵션을 설정.
+    storage:multer.diskStorage( { destination(){} , filename(){} } ), 
+    limits : {},	// 파일 용량제한
 });
 */
 const upload = multer({
@@ -55,13 +62,11 @@ const upload = multer({
 });
 
 
-
-
+// 라우팅
 app.get('/', (req, res)=>{
     res.sendFile( path.join(__dirname, 'multer.html'));
 
 });
-
 
 app.post('/upload', upload.single('image'), (req,res)=>{
     console.log( req.file );
@@ -71,7 +76,6 @@ app.post('/upload', upload.single('image'), (req,res)=>{
         filename : req.file.filename,
     })
 });
-
 
 
 app.listen(app.get('port'), ()=>{

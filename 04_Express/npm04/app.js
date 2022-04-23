@@ -34,11 +34,13 @@ app.use(express.json());    //바디파서 json : json 사용을 위한 모듈
 app.use(express.urlencoded({extended:true}));   //바디파서 폼데이터 모듈
 //app.use(body-Parser.json());
 //app.use(body-Parser.urlencoded({extend : false}));
+
+//세션 활용을 위한 미들웨어
 app.use(session({
     resave : false,
     saveUninitialized : false,
     secret : 'keonhee',
-}));    //세션 활용을 위한 미들웨어
+}));    
 // ---------------------------------------------------
 
 
@@ -75,8 +77,12 @@ app.get('/', (req, res)=>{
         httpOnly:true,
         path:'/'
     });
+
     */
-    res.sendFile(path.join(__dirname,'/index.html'));
+
+
+
+    // res.sendFile(path.join(__dirname,'/index.html'));
 
     // id라는 이름의 쿠키가 있으면 ' 000님 반갑습니다 ' 를 send
     if(req.cookies.id){
@@ -90,27 +96,30 @@ app.get('/', (req, res)=>{
 
 app.post('/login',(req,res)=>{
     // post이기 때문에 localhost:3000/login 까지만 보여진다.
-    // http 서버에서 전달 파라미터를 분해하는 관정
+
+    // ** http 서버에서는 다음과 같이 전달 파라미터를 분해한다 **
     // const { query } = url.parse(req.url);
     // const { name } = qs.parse(query);
 
-    //express 서버에서 전달 파라미터를 활용하는 과정
-    // console.log(req.body.name);
+    // ** express 서버에서 전달 파라미터를 활용하는 과정 ** 
+    console.log(req.body.name);
+
     const name = req.body.name;
 
     const expires = new Date();
     expires.setMinutes(expires.getMinutes() + 1);
-
+    
+    // 파라미터 내용을 쿠키로 추가  
     res.cookie( 'id', name, {
         expires : expires,
         httpOnly : true,
         path:'/'
-    }); // 파라미터 내용을 쿠키로 추가
+    }); 
 
     res.redirect('/'); // redirect('/'); 특정 리퀘스트로 이동한다.
 });
 
-// id 쿠키를 지우고, '/'로 리다이렉트 하는 라우터를 만들어주세요
+// id 쿠키를 지우고, '/'로 리다이렉트 하는 라우터를 만든다.
 app.get('/logout',(req, res)=>{
 
     res.clearCookie('id', req.cookies.name, {
