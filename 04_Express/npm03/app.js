@@ -24,7 +24,9 @@ app.use( (req, res, next)=>{
     // next()가 없으면 현재 라우터에서 요청에 대한 응답이 종료되니, 미들웨어를 위한 라우터는 반드시 next()를 사용한다.
 });
 
+
 //-------------------------------------------------------
+
 
 // 2. 특정 리퀘스트에서만 실행할 미들웨어
 app.use('/about', (req, res, next)=>{
@@ -37,6 +39,7 @@ app.use('/about', (req, res, next)=>{
 app.get('/about', (req, res)=>{
     res.send('<h2>Hello About</h2>');
 });
+
 
 // ----------------------------------
 // 4.1 에러발생
@@ -57,9 +60,6 @@ app.use((req, res, next)=>{
     */
     next();
 });
-
-
-
 
 
 app.get('/', (req, res)=>{
@@ -85,8 +85,6 @@ app.get('/category/:name', (req, res)=>{
 })
 
 
-
-
 // 6. 404에러 처리
 app.use((req,res,next)=>{
     res.send('비정상적 접근~ 에러입니다~');
@@ -101,9 +99,7 @@ app.use((req,res,next)=>{
 app.use((err, req, res, next)=>{
     console.error(err);
     res.status(200).send('에러내용을 브라우저에 알려주지 않을래');
-   
 });
-
 
 
 app.listen(app.get('port'), ()=>{
