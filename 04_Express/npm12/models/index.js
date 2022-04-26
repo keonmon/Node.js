@@ -3,6 +3,7 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+// 모델 객체 require
 const User = require('./user');
 const Comment = require('./comment');
 
@@ -12,7 +13,7 @@ db.sequelize = sequelize;   // db에 연결하기 위한 연결객체를 db객�
 db.Sequelize = Sequelize;   // 현재 파일에 require한 Sequelize를 db객체에 담는다.
 // db = {sequelize:sequelize, Sequelize:Sequelize } 한다는 것
 
-// require한 user모델과 comment 모델도 db에 담는다.
+// require한 user모델과 comment모델을 db에 담는다.
 db.User = User;
 db.Comment = Comment;
 

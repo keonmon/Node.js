@@ -1,4 +1,5 @@
 const express = require('express');
+
 const path = require('path');
 const nunjucks = require('nunjucks');
 
@@ -12,7 +13,7 @@ app.use(express.urlencoded({extended:false}));
 app.set('view engine', 'html');
 nunjucks.configure('views',{express:app, watch:true,});
 
-//static 폴더 설정
+// static 폴더 설정 ( 여기에는 뷰에서 사용되는 sequelize.js가 위치한다 )
 app.use(express.static(path.join(__dirname, 'public')));
 
 

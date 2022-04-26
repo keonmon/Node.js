@@ -29,70 +29,6 @@ document.getElementById('user-form').addEventListener('submit', async (e)=>{
 });
 
 
-//댓글 등록 : comment-form이 submit이벤트를 일으키면 실행.
-document.getElementById('comment-form').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-
-    const userid = e.target.userid.value;
-    const comment = e.target.comment.value;
-
-    if(!userid){ return alert('아이디를 입력하세요');}
-    if(!comment){ return alert('댓글을 입력하세요');}
-
-    try{
-        await axios.post('/comments',{userid, comment});
-        getComments();
-    }catch(err){
-        console.error(err);
-    }
-    e.target.userid.value = '';
-    e.target.comment.value = '';
-});
-
-async function getComments(){
-    try{
-        const res = await axios.get('/comments');
-        const comments = res.data;
-        const tbody = document.querySelector('#comment-list tbody');
-        tbody.innerHTML='';
-
-        comments.map(function(comment){
-            const row = document.createElement('tr');
-            let td = document.createElement('td');
-            td.textContent = comment.id;
-            row.appendChild(td);
-
-            td = document.createElement('td');
-            td.textContent = comment.User.name; //comment 포함된 user모델의 필드를 표시
-            row.appendChild(td),
-
-            td = document.createElement('td');
-            td.textContent = comment.comment;
-            row.appendChild(td);
-            
-            // 수정버튼
-            const edit = document.createElement('button');
-            edit.textContent='수정';
-            //삭제버튼
-            const remove = document.createElement('button');
-            remove.textContent = '삭제';
-
-            td = document.createElement('td');  //td버튼 생성
-            td.appendChild(edit);               // 버튼을 td에 추가
-            row.appendChild(td);                // 버튼이 든 td를 tr에 추가
-
-            td = document.createElement('td');
-            td.appendChild(remove);
-            row.appendChild(td);
-            
-            tbody.appendChild(row);
-        });
-    }catch(err){
-        console.error(err);
-    }
-};
-
-
 async function getUsers(){
     // 모든 user를 조회해서 user-list 테이블을 표시한다.
     try{
@@ -131,3 +67,70 @@ async function getUsers(){
         console.error(err);
     }
 }
+
+
+//댓글 등록 : comment-form이 submit이벤트를 일으키면 실행.
+document.getElementById('comment-form').addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    const userid = e.target.userid.value;
+    const comment = e.target.comment.value;
+
+    if(!userid){ return alert('아이디를 입력하세요');}
+    if(!comment){ return alert('댓글을 입력하세요');}
+
+    try{
+        await axios.post('/comments',{userid, comment});
+        getComments();
+    }catch(err){
+        console.error(err);
+    }
+    e.target.userid.value = '';
+    e.target.comment.value = '';
+});
+
+
+// 저장된 댓글 조회
+async function getComments(){
+    try{
+        const res = await axios.get('/comments');
+        const comments = res.data;
+        const tbody = document.querySelector('#comment-list tbody');
+        tbody.innerHTML='';
+
+        comments.map(function(comment){
+            const row = document.createElement('tr');
+            let td = document.createElement('td');
+            td.textContent = comment.id;
+            row.appendChild(td);
+
+            td = document.createElement('td');
+            td.textContent = comment.commenter; //comment 포함된 user모델의 필드를 표시
+            row.appendChild(td),
+
+            td = document.createElement('td');
+            td.textContent = comment.comment;
+            row.appendChild(td);
+            
+            // 수정버튼
+            const edit = document.createElement('button');
+            edit.textContent='수정';
+            
+            //삭제버튼
+            const remove = document.createElement('button');
+            remove.textContent = '삭제';
+
+            td = document.createElement('td');  //td버튼 생성
+            td.appendChild(edit);               // 버튼을 td에 추가
+            row.appendChild(td);                // 버튼이 든 td를 tr에 추가
+
+            td = document.createElement('td');
+            td.appendChild(remove);
+            row.appendChild(td);
+
+            tbody.appendChild(row);
+        });
+    }catch(err){
+        console.error(err);
+    }
+};

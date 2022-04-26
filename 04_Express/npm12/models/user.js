@@ -22,6 +22,7 @@ module.exports = class User extends Sequelize.Model {
     // 테이블을 생성하고 초기화하는 함수
     static init ( sequelize ){
         return super.init({
+            
         },
         {
             
