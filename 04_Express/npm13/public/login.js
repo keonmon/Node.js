@@ -3,8 +3,8 @@ document.getElementById('login-form').addEventListener('submit', async (e)=>{
     const userid = e.target.userid.value;
     const pwd = e.target.pwd.value;
     if(!userid){ return alert("아이디를 입력하셈");}
-    if(!pwd){ return alert("비번을 입력하셈");}
-
+    if(!pwd){ return alert("비번을 입력하셈");} // 여기까지는 작동함
+    
     try{
         const res = await axios.post('/members/login', {userid,pwd});
         const mem = res.data;

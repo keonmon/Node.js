@@ -37,25 +37,22 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/comments', commentsRouter);
 
-/*
-app.get('/', (req,res)=>{
-    res.send('<h1>안녕하세요</h1>');
-})
-*/
 
-app.use((req,res,next)=>{
+// 에러처리
+app.use((req, res, next)=>{
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
     error.status = 404;
     next(error);
 });
 
-app.use((err, req, res,next)=>{
+app.use((err, req, res, next)=>{
     res.locals.message = res.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
     // console.error(err);
     res.render('error');
 });
+
 
 app.listen(app.get('port'), ()=>{
     console.log(app.get('port'),'번 포트에서 대기중');

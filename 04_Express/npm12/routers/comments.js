@@ -58,7 +58,7 @@ router.patch('/update/:id', async (req,res)=>{
     }
 });
 
-
+// 댓글 삭제 라우터
 router.delete('/delete/:id', async(req, res)=>{
     try{
         const result = await Comment.destroy({
@@ -86,7 +86,7 @@ router.delete('/delete/:id', async(req, res)=>{
 //    where : {id:2},
 //});
 
-
+// 조건부 조회 라우터
 router.get('/search/:id', async (req, res,next)=>{
     try{
         const comments = await Comment.findAll({
@@ -104,4 +104,6 @@ router.get('/search/:id', async (req, res,next)=>{
         next(err);
     }
 } );
+
+
 module.exports = router;

@@ -1,10 +1,11 @@
 const express = require('express');
-const Member = require('../models/Member');
-const Board = require('../models/Board');
-const Reply = require('../models/Reply');
-const router = express.Router;
+const Member = require('../models/member');
+const Board = require('../models/board');
+const Reply = require('../models/reply');
+const router = express.Router();
 
-router.post('/login', async (req, res)=>{
+// 로그인 동작
+router.post('/login', async (req, res, next)=>{
     try{
         const luser = await Member.findOne({
             // 전달된 아이디와 같은 레코드 검색 후 luser변수에 저장

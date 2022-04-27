@@ -209,8 +209,6 @@ async function getComments(){
                     console.error(err);
                 }
             });
-
-
         });
     }catch(err){
         console.error(err);
