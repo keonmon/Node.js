@@ -59,10 +59,61 @@ async function getUsers(){
             td.textContent = user.married ? '기혼' : '미혼';
             row.appendChild(td);
 
+
+            // row를 클릭하면 이벤트가 발생하도록 설정
+            row.addEventListener('click', ()=>{
+                getCommentOne(user.id);
+            });
+
+
             tbody.appendChild(row);     // 완성된 tr을 tbody에 추가
 
         });
 
+    }catch(err){
+
+    }
+}
+
+// 작성자를 클릭하면 해당 댓글만 표시하는 기능
+async function getCommentOne(id){
+    try{
+        const res = await axios.get(`/comments/search/${id}`); 
+        const comments = res.data;
+        const tbody = document.querySelector('#comment-list tbody');
+        tbody.innerHTML = '';
+        comments.map(function(comment){
+            const row = document.createElement('tr');
+            let td = document.createElement('td');
+            td.textContent = comment.id;
+            row.appendChild(td);
+
+            td = document.createElement('td');
+            td.textContent = comment.User.name; //comment 포함된 user모델의 필드를 표시
+            row.appendChild(td),
+
+            td = document.createElement('td');
+            td.textContent = comment.comment;
+            row.appendChild(td);
+
+            // 수정버튼
+            const edit = document.createElement('button');
+            edit.textContent='수정';
+            // 수정버튼 생성
+            td = document.createElement('td');  //td버튼 생성
+            td.appendChild(edit);               // 버튼을 td에 추가
+            row.appendChild(td);                // 버튼이 든 td를 tr에 추가
+            
+            //삭제버튼
+            const remove = document.createElement('button');
+            remove.textContent = '삭제';
+            //삭제버튼 생성
+            td = document.createElement('td');
+            td.appendChild(remove);
+            row.appendChild(td);
+
+            tbody.appendChild(row);
+        });
     }catch(err){
         console.error(err);
     }
@@ -105,7 +156,7 @@ async function getComments(){
             row.appendChild(td);
 
             td = document.createElement('td');
-            td.textContent = comment.commenter; //comment 포함된 user모델의 필드를 표시
+            td.textContent = comment.User.name; //comment 포함된 user모델의 필드를 표시
             row.appendChild(td),
 
             td = document.createElement('td');
@@ -115,20 +166,51 @@ async function getComments(){
             // 수정버튼
             const edit = document.createElement('button');
             edit.textContent='수정';
+            // 수정버튼 생성
+            td = document.createElement('td');  //td버튼 생성
+            td.appendChild(edit);               // 버튼을 td에 추가
+            row.appendChild(td);                // 버튼이 든 td를 tr에 추가
             
             //삭제버튼
             const remove = document.createElement('button');
             remove.textContent = '삭제';
-
-            td = document.createElement('td');  //td버튼 생성
-            td.appendChild(edit);               // 버튼을 td에 추가
-            row.appendChild(td);                // 버튼이 든 td를 tr에 추가
-
+            //삭제버튼 생성
             td = document.createElement('td');
             td.appendChild(remove);
             row.appendChild(td);
 
             tbody.appendChild(row);
+
+
+
+            // 수정버튼에 이벤트리스너 설정
+            edit.addEventListener('click', async ()=>{
+                // 댓글 id와 입력받은 내용으로 comment를 수정하시고, 다시 댓글들을 검색하여 댓글을 표시해주세요.
+                const newComment = prompt('바꿀 내용을 입력하세요.');
+                if(!newComment) { return alert('내용을 반드시 입력해야 합니다.');}
+
+                try{
+                    // http://localhost:3000/comments/3
+                    await axios.patch(`/comments/update/${comment.id}`, {comment:newComment});
+                    getComments();
+
+                }catch(err){
+                    console.error(err);
+                }
+            });
+            
+
+            // 삭제버튼 이벤트 리스너 설정
+            remove.addEventListener('click', async ()=>{
+                try{
+                    await axios.delete(`/comments/delete/${comment.id}`);
+                    getComments();
+                }catch(err){
+                    console.error(err);
+                }
+            });
+
+
         });
     }catch(err){
         console.error(err);

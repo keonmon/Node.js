@@ -53,7 +53,7 @@ app.use((err, req, res,next)=>{
     res.locals.message = res.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
-    console.error(err);
+    // console.error(err);
     res.render('error');
 });
 
