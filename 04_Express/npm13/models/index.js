@@ -11,8 +11,8 @@ db.Sequelize = Sequelize;
 
 // 각 테이블에 대한 모델을 만들고, require
 const Member = require('./member');
-const Board = require('./Board');
-const Reply = require('./Reply');
+const Board = require('./board');
+const Reply = require('./reply');
 
 db.Member = Member;
 db.Board = Board;

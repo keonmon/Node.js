@@ -3,7 +3,7 @@ getBoard_list();
 // 데이터베이스에서 게시물들을 읽어와 table의 tbody와 tr과 td로 삽입하는 함수
 async function getBoard_list(){
     try{
-        const res = await axios.get('/boards/boardLilst');
+        const res = await axios.get('/boards/boardList');
         const boards = res.data;
 
         //테이블의 tbody 안을 비운다.
@@ -13,13 +13,31 @@ async function getBoard_list(){
         boards.map( async function(board){
             const row = document.createElement('tr');
 
+            row.addEventListener('click',()=>{
+                location.href="/boards/boardView/"+board.id;
+            });
+
             let td = document.createElement('td');
             td.textContent = board.id;
             td.id = 'boardnum';
             row.append(td);
             
             td = document.createElement('td');
+            // 현재 게시물의 댓글 개수를 조회해 제목 옆에 표시한다.
+            // 갯수 : 조회된(객체.length)
             let tContent = board.subject;
+            
+            try {
+                const result = await axios.get(`/boards/replycnt/${board.id}`);
+                const data = result.data;
+                let cnt = data.cnt;
+                if(cnt!=0){
+                    tContent = tContent + ' <span style="color:red; font-weight:bold">['+cnt+']</span>';
+                }
+            } catch (err) {
+                console.error(err);
+            }
+
             td.innerHTML = tContent;
             row.appendChild(td);
 
@@ -34,7 +52,7 @@ async function getBoard_list(){
             row.appendChild(td);
 
             tbody.appendChild(row);
-        })
+        });
     }catch(err){
 
     }
