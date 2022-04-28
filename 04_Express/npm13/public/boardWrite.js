@@ -1,7 +1,7 @@
 document.getElementById('write-form').addEventListener('submit', async (e)=>{
     e.preventDefault();
     const subject = e.target.subject.value;
-    const writer = e.target.writer.value;
+    const writer = e.target.userid.value;
     const text = e.target.text.value;
     if(!subject){return alert('제목을 입력히셈');}
     if(!text){return alert('내용을 입력히셈');}

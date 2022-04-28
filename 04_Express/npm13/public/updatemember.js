@@ -21,5 +21,4 @@ document.getElementById('memberUpdate').addEventListener('submit', async (e)=>{
     }catch(err){
 
     }
-
 });

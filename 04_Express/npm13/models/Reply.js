@@ -11,7 +11,7 @@ module.exports = class Reply extends Sequelize.Model{
                 type:Sequelize.STRING(200),
                 allowNull:false,
             },
-            create_at:{
+            created_at:{
                 type:Sequelize.DATE,
                 defaultValue:Sequelize.NOW,                
                 allowNull:false,

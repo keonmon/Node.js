@@ -53,10 +53,10 @@
             <table>
                 <thead>
                     <tr>
-                        <td width="140" align="center">작성일시</td>
-                        <td width="90" align="center">작성자</td>
-                        <td width="400" align="center">내용</td>
-                        <td width="70" align="center">&nbsp;</td>
+                        <th width="140" align="center">작성일시</th>
+                        <th width="90" align="center">작성자</th>
+                        <th width="400" align="center">내용</th>
+                        <th width="70" align="center">&nbsp;</th>
                     </tr>
                     <tr>
                         <td align="center">{{dt | date("MM/DD HH:mm")}}</td>
@@ -80,7 +80,7 @@
                     const replys = result.data;
                     const tbody = document.querySelector('#reply-list tbody');
                     tbody.innerHTML='';
-
+                    
                     replys.map(function(reply){
                         const row = document.createElement('tr');
 
@@ -106,6 +106,7 @@
                         remove1.setAttribute('type', 'button'); 
                         remove1.value = '삭제';
                         
+                        // 삭제 버튼 클릭시 이벤트
                         remove1.addEventListener('click', async ()=>{
                             try {
                                 await axios.delete(`/boards/deleteReply/${reply.id}`);
@@ -116,10 +117,7 @@
                         });
 
 
-
-
-
-                        td = docuemnt.createElement('td');
+                        td = document.createElement('td');
                         td.id = 'remove';
                         if(reply.writer == loginUser){ 
                             td.appendChild(remove1);
@@ -131,7 +129,7 @@
                         tbody.appendChild(row);
                     });
                 } catch (err) {
-
+                    console.error(err);
                 }
             }
 
@@ -151,7 +149,6 @@
                 }
                 e.target.reply.value='';
             });
-
         </script>
     </div>
 </body>

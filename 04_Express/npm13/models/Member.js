@@ -31,7 +31,7 @@ module.exports = class Member extends Sequelize.Model{
                 type:Sequelize.STRING(100),
                 allowNull : true,
             }, 
-            create_at:{
+            created_at:{
                 type:Sequelize.DATE,
                 allowNull : true,
                 defaultValue:Sequelize.NOW,

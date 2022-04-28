@@ -16,7 +16,7 @@ module.exports = class Board extends Sequelize.Model{
                 allowNull:false,
                 defaultValue:0,
             }, 
-            createAt:{
+            created_at:{
                 type:Sequelize.DATE,
                 defaultValue:Sequelize.NOW,
                 allowNull:true,

@@ -13,6 +13,7 @@ async function getBoard_list(){
         boards.map( async function(board){
             const row = document.createElement('tr');
 
+            // 게시글 클릭시 boardView로 이동
             row.addEventListener('click',()=>{
                 location.href="/boards/boardView/"+board.id;
             });
@@ -23,16 +24,17 @@ async function getBoard_list(){
             row.append(td);
             
             td = document.createElement('td');
+
             // 현재 게시물의 댓글 개수를 조회해 제목 옆에 표시한다.
-            // 갯수 : 조회된(객체.length)
+            // 갯수 : 조회된 객체.length
             let tContent = board.subject;
             
             try {
                 const result = await axios.get(`/boards/replycnt/${board.id}`);
                 const data = result.data;
-                let cnt = data.cnt;
+                let cnt = data.length;
                 if(cnt!=0){
-                    tContent = tContent + ' <span style="color:red; font-weight:bold">['+cnt+']</span>';
+                    tContent = tContent + ' <span style="color:red; font-weight:bold">['+ cnt +']</span>';
                 }
             } catch (err) {
                 console.error(err);

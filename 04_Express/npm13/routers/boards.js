@@ -87,8 +87,10 @@ router.get('/boardView/:id', async (req, res,next)=>{
             attributes:['readCount'],
             where:{id:req.params.id},
         });
+
         // 검색한 게시물의 조회수를 추출하여 +1 연산
         const cnt = result.readCount + 1;
+        
         // 조회수 연산결과를 게시물에 update
         await Board.update({
             readCount:cnt,
@@ -96,6 +98,7 @@ router.get('/boardView/:id', async (req, res,next)=>{
         {
             where:{id:req.params.id},
         });
+
         // 게시물을 재검색
         const board = await Board.findOne({
             where:{id:req.params.id},
@@ -117,7 +120,7 @@ router.get('/replyList/:boardnum', async (req, res, next)=>{
     try {
         const replys = await Reply.findAll({
             where:{boardnum:req.params.boardnum},
-            order:[['id','desc']],
+            order:[['id','DESC']],
         });
         res.json(replys);
     } catch (err) {
@@ -160,7 +163,6 @@ router.get('/replycnt/:id', async (req, res, next)=>{
         const result = await Reply.findAll({
             where:{boardnum:req.params.id},
         });
-        console.log(result.Reply);
         res.json(result);
     } catch (err) {
         console.error(err);
