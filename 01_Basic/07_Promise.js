@@ -99,7 +99,7 @@ while (Date.now() < wakeUpTime){}
 console.log('작업2 : 오래글리는 작업의 다음 작업');
 console.log('작업1, 작업2 순서에 맞춰 작업 끝');
 
-*/
+
 
 //비동기 실행
 function longRunningTask(){
@@ -114,7 +114,7 @@ console.log('작업2 : 오래걸리는 작업의 다음작업 시작');
 console.log('작업2만 일단 끝!');
 
 
-/*
+
 // Promise로 실행
 console.log('시작');
 let longRunningTask = new Promise(
@@ -157,6 +157,7 @@ printString("A").then(
     );
 
 
+
 // 숫자 하나를 변수 k에저장하고, 짝수면 '짝수입니다', 홀수면 '홀수입니다' 라는 텍스트를 결과로 전달하는 promise를 만들고, 결과를 출력하세요.
 
 const k = 25;
@@ -176,8 +177,9 @@ pm
         })
         .catch((error)=>{
             console.error(error);
-        });
-
+        }
+    );
+*/
 
 // 연속 Promise()의 then과 resolve 사용
 const pm1 = new Promise((resolve, reject)=>{
@@ -204,5 +206,5 @@ pm1
         console.error(error);
     });
 
-    
+/*
 */
