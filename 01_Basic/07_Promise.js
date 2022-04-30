@@ -69,7 +69,7 @@ pm
     });
 
 
-*/
+
 
 
 console.log();
@@ -82,11 +82,12 @@ const printString = (string, callback) => {
     callback();
 }
 // printString('A', function() => { printString ("B", function()=>{} ); } );
-printString('A', () => {printString ("B", ()=>{}); } );
+// printString('A', () => {printString ("B", ()=>{}); } );
+printString('A', ()=>{});
+printString ("B", ()=>{});
 
 
 
-/*
 
 //동기 실행
 console.log('작업 시작');
@@ -98,7 +99,7 @@ while (Date.now() < wakeUpTime){}
 console.log('작업2 : 오래글리는 작업의 다음 작업');
 console.log('작업1, 작업2 순서에 맞춰 작업 끝');
 
-
+*/
 
 //비동기 실행
 function longRunningTask(){
@@ -113,7 +114,7 @@ console.log('작업2 : 오래걸리는 작업의 다음작업 시작');
 console.log('작업2만 일단 끝!');
 
 
-
+/*
 // Promise로 실행
 console.log('시작');
 let longRunningTask = new Promise(
