@@ -32,7 +32,8 @@ async function getBoard_list(){
             try {
                 const result = await axios.get(`/boards/replycnt/${board.id}`);
                 const data = result.data;
-                let cnt = data.length;
+                //let cnt = data.length;
+                let cnt = data.cnt;
                 if(cnt!=0){
                     tContent = tContent + ' <span style="color:red; font-weight:bold">['+ cnt +']</span>';
                 }

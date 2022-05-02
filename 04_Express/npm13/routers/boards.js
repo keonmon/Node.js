@@ -65,14 +65,24 @@ router.post('/writeBoard', upload.single('image'), async (req,res,next)=>{
     // filename필드명에는 서버에 저장되는 파일명(현재날짜와 시간이 밀리초로 변환된 값 + 파일명
     // realfilename 필드명에는 원래 파일명
     try {
-        const board = await Board.create({
-            subject : req.body.subject,
-            writer : req.body.writer,
-            content : req.body.text,
-            filename : req.file.originalname,
-            realfilename : req.file.filename,
-        });
-        res.json(board);
+        if(req.file != undefined){
+            const board = await Board.create({
+                subject : req.body.subject,
+                writer : req.body.writer,
+                content : req.body.text,
+                filename : req.file.originalname,
+                realfilename : req.file.filename,
+            });
+            res.json(board);
+
+        }else{
+            const board = await Board.create({
+                subject : req.body.subject,
+                writer : req.body.writer,
+                content : req.body.text,
+            });
+            res.json(board);
+        }
     } catch (err) {
         console.error(err);
         next(err);
@@ -163,12 +173,90 @@ router.get('/replycnt/:id', async (req, res, next)=>{
         const result = await Reply.findAll({
             where:{boardnum:req.params.id},
         });
-        res.json(result);
+        //res.json(result);
+        res.json({cnt:result.length})
     } catch (err) {
         console.error(err);
         next(err);
     }
 });
 
+// 게시물 수정폼으로 이동
+router.get('/updateForm/:id', async (req,res,next)=>{
+    // 전달된 아이디로 게시물을 조회한 후 updateForm.html로 렌더링, 세션에 있는 유저아이디와 조회한 게시물이 같이 이동한다.
+    try{
+        const board = await Board.findOne({
+            where:{id:req.params.id},
+        });
+        const luser = req.session.loginUser;
+        res.render('updateForm',{board, luser});
+    }catch(err){
+        console.error(err);
+        next(err);
+    }
+});
+
+// 게시물 수정
+router.post('/update', upload.single('image'), async (req,res,next)=>{
+    try {
+        if(req.file != undefined){
+            // 업로드된 파일이 있다면 (undefined가 아니라면)
+            await Board.update({
+                subject:req.body.subject,
+                content:req.body.text,
+                filename:req.file.originalname,
+                realfilename:req.file.filename,
+            },{
+                where : {id:req.body.id},
+            });
+        }else{
+            // 업로드된 파일이 없다면 (undefined라면)
+            await Board.update({
+                subject:req.body.subject,
+                content:req.body.text,
+            },{
+                where : {id:req.body.id},
+            });
+        }
+        // res.send('ok');
+        res.redirect('/boards/boardView2/'+req.body.id);
+        
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
+
+// 게시물 보기 ( 조회수 카운트X )
+router.get('/boardView2/:id', async (req, res,next)=>{
+    try {
+        // 게시물을 검색
+        const board = await Board.findOne({
+            where:{id:req.params.id},
+        });
+
+        // render로 전송
+        const luser = req.session.loginUser;
+        const dt = new Date();
+        res.render('boardView', {board, luser, dt});
+
+    } catch(err) {
+        console.error(err);
+        next(err);
+    }
+});
+
+// 게시물 삭제
+router.get('/deleteBoard/:id', async (req,res,next)=>{
+    try {
+        await Board.destroy({
+            where:{id:req.params.id},
+        });
+        res.redirect('/boards');
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+});
 
 module.exports = router;
