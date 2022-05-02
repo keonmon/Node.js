@@ -52,10 +52,10 @@ module.exports = class User extends Sequelize.Model{
     }
 }
 
-// 유저1이 유저2를 팔로잉한다
+// 유저1이 유저2를 팔로잉한다 (유저1 -> 유저2)
 // 유저1(followers), 유저2(followings)로 레코드 생성
 
-// 반대로 맞팔하면
+// 반대로 맞팔 하면 (유저1 <- 유저2)
 // 유저2(followers), 유저1(followings)로 레코드 생성
 
 // 유저1(followers), 유저3(followings)
@@ -63,5 +63,8 @@ module.exports = class User extends Sequelize.Model{
 // 유저3(followers), 유저2(followings)
 // 유저2(followers), 유저3(followings)
 
-// 유저1을 팔로잉하는 유저를 검색하려면 -> following에서 유저1을 조회
-// 유저1이 팔로잉하는 유저를 검색하려면 -> follower에서 유저1을 조회
+// 유저1의 팔로워(followers)를 조회하려면?
+// -> following에서 유저1을 조회
+
+// 유저1이 팔로잉(following)하는 유저를 조회하려면?
+// -> follower에서 유저1을 조회

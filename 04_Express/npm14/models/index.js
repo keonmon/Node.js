@@ -7,12 +7,7 @@ const User = require('./user');
 const Post = require('./post');
 const Hashtag = require('./hashtag');
 
-let sequelize = new Sequelize(
-  config.database, 
-  config.username, 
-  config.password, 
-  config
-);
+let sequelize = new Sequelize( config.database, config.username, config.password, config );
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

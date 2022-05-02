@@ -23,8 +23,6 @@
                 <input type="submit" value="수정">
                 <input type="button" value="돌아가기" onclick="location.href='/boards/boardView2/{{board.id}}'"></td></tr>
             </tr>
-            
-            
         </table>
     </form>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -45,12 +43,12 @@
             formData.append('image', e.target.image.files[0]);
             try{
                 await axios.post('/boards/update', formData);
+                
                 // boardView2는 조회수 카운트를 안하는 라우터
                 location.href='/boards/boardView2/{{board.id}}';
             }catch(err){
                 
             }
-
         });
     </script>
 </body>

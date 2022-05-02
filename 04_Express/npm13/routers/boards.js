@@ -183,12 +183,13 @@ router.get('/replycnt/:id', async (req, res, next)=>{
 
 // 게시물 수정폼으로 이동
 router.get('/updateForm/:id', async (req,res,next)=>{
-    // 전달된 아이디로 게시물을 조회한 후 updateForm.html로 렌더링, 세션에 있는 유저아이디와 조회한 게시물이 같이 이동한다.
+    // 전달된 아이디로 게시물을 조회한 후 updateForm.html로 렌더링, 
+    // 세션에 있는 '유저아이디'와 조회한 게시물이 같이 이동한다.
     try{
         const board = await Board.findOne({
             where:{id:req.params.id},
         });
-        const luser = req.session.loginUser;
+        const luser = req.session.loginUser;    // loginUser 세션을 가져와 저장
         res.render('updateForm',{board, luser});
     }catch(err){
         console.error(err);
@@ -218,8 +219,9 @@ router.post('/update', upload.single('image'), async (req,res,next)=>{
                 where : {id:req.body.id},
             });
         }
-        // res.send('ok');
-        res.redirect('/boards/boardView2/'+req.body.id);
+        res.end();
+        // axios를 사용했기 때문에 redirect코드는 의미 없음
+        // res.redirect('/boards/boardView2/'+ req.body.id);
         
     } catch (err) {
         console.error(err);
