@@ -59,19 +59,18 @@ router.post('/', upload2.none(), async(req,res)=>{
             const result = await Promise.all(
                 hashtags.map((tag)=>{
                     return Hashtag.findOrCreate({
+
                         //slice(1) -> title 필드값이 해시태그 중 하나(tag)의 내용 중 #을 제외한 나머지 글자와 같은 조건으로 검색한다.
                         // 같은 title값이 있으면, 지나가고, 없으면 Hashtag테이블에 현재 해시태그로 레코드를 추가하고 그 값으로 리턴한다.
                         where:{title:tag.slice(1).toLowerCase()},   
                     });
                 }),
             );
-            await currentPost.addHashtags(result.map( (r)=>r[0] ) );
+            await currentPost.addHashtags(result.map( (r) => r[0] ) );
             // 지금 추가한 post게시물에 대한 해시태그로 해시태그들을 posthashtags테이블에 추가
 
-            // addHashtags : 
+            // addHashtags : Post모델과, Hashtag모델의 관계에서 Post모델에 자동 생성된 메서드 - Hashtag테이블에 데이터를 추가하는 메서드
         }
-
-
 
         res.redirect('/');
     } catch (err) {

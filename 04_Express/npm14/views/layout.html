@@ -17,13 +17,13 @@
                     로그인 한 사람의 정보가 세션에 저장이 되고 
                     그 세션값이 현재 파일에 render에 의해 담겨져 왔다는 뜻-->
                     <div class="user-name">
-                        {{'안녕하세요' + user.nick + '님'}}
+                        {{'안녕하세요 ' + user.nick + '님😊'}}
                     </div>
                     <div class="harf"><div>팔로워</div>
                         <div class="count follower-count">{{followerCount}}</div>
                     </div>
                     <div class="half">
-                        <div>필로잉</div>
+                        <div>팔로잉</div>
                         <div class="count following-count">{{followingCount}}</div> 
                     </div>
                     <input type="hidden" id="my-id" value="{{user.id}}">

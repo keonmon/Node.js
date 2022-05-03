@@ -55,14 +55,19 @@ router.get('/hashtag', async (req,res,next)=>{
     if(!query){
         return res.redirect('/');   // 도착한 검색어가 없으면 메인으로 redirect
     }
+
     try {
         // 해시태그 단어 검색
         const hashtag = await Hashtag.findOne({ where:{ title:query, } });
         let posts = [];
+
         if(hashtag){
             // 해당 해시태그로 외래키인 게시물들을 검색
-            posts = await hashtag.getPosts({ include: [{model:User }] });
+            posts = await hashtag.getPosts({ include: [{ model:User }] });
         }
+        
+        console.log(posts)
+
         return res.render('main', {
             title:`${query} | NodeGram`,
             posts,

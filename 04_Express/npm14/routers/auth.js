@@ -42,6 +42,7 @@ router.post('/join',async(req,res,next)=>{
 // 로그인 동작
 router.post('/login', (req,res,next)=>{
     // passport 모듈로 로그인을 구현한다.
+    console.log('/login 라우터 동작');
     passport.authenticate('local', (authError, user, info)=>{
         // 로그인을 위해 현재 미들웨어가 실행되면, 
         // 'local'까지만 인식되어지고, passport/localStrategy라는 곳으로 이동하여 로그인을 처리한다.
@@ -52,23 +53,23 @@ router.post('/login', (req,res,next)=>{
             return next(authError);
         }
         if(!user){  // user가 false라면 (로그인에 실패했다면)
+            console.log('user가 false여서 로그인 실패');
             return res.redirect(`/?loginError=${info.message}`);
         }
         
         //여기서부터 정상 로그인
         return req.login(user, (loginError)=>{
+            console.log('정상적으로 로그인에 성공');
             //req.login을 하는 순간 index.js로 이동한다. (로그인루틴 정상실행 - 실행 후 복귀)
             if(loginError){ //index.js에서 보낸 에러가 있다면 에러처리
                 console.error(loginError);
                 return next(loginError);
             }
             // 세션위치에서 세션쿠키가 브라우저로 보내어진다.
+            console.log('세션 위치에서 세션쿠키가 브라우저로 보내짐');
             return res.redirect('/');
         });
-
-
     })(req,res,next)  // 미들웨어 속 미들웨어에는 (req,res,next)를 뒤에 붙인다.
-
 });
 
 router.get('/logout', (req,res)=>{

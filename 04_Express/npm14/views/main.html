@@ -63,6 +63,7 @@
         formData.append('img', e.target.files[0]);
         axios.post('/post/img', formData)
         .then((res)=>{
+            docu
             document.getElementById('img-url').value = res.data.url;
             document.getElementById('img-preview').src = res.data.url;
             document.getElementById('img-preview').style.display = 'inline';
