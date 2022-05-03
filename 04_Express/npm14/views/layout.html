@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>layout.html</title>
+    <!-- <title>layout.html</title> -->
     <title>{{title}}</title>
     <link rel="stylesheet" href="/main.css">
 </head>
@@ -12,17 +12,24 @@
     <div class="container">
         <div class="profile-wrap">
             <div class="profile">
-                {% if user %}
+                {% if user %}   
+                <!-- 로그인 유저가 null이 아니라면 (로그인 한 사람이 있다면 )
+                    로그인 한 사람의 정보가 세션에 저장이 되고 
+                    그 세션값이 현재 파일에 render에 의해 담겨져 왔다는 뜻-->
                     <div class="user-name">
                         {{'안녕하세요' + user.nick + '님'}}
                     </div>
                     <div class="harf"><div>팔로워</div>
                         <div class="count follower-count">{{followerCount}}</div>
                     </div>
+                    <div class="half">
+                        <div>필로잉</div>
+                        <div class="count following-count">{{followingCount}}</div> 
+                    </div>
                     <input type="hidden" id="my-id" value="{{user.id}}">
                     <a id="my-profile" href="/profile" class="btn">내 프로필</a>
                     <a id="logout" href="/auth/logout" class="btn">로그아웃</a>
-                {{ else }}
+                {% else %}
                     <form id="login-form" action="/auth/login" method="post">
                         <div class="input-group">
                             <label id="email">이메일</label>
@@ -39,10 +46,11 @@
                 {% endif %}
             </div>
         </div>
+        {% block content %}
+        {% endblock %}
     </div>
-    {% block content %}
-    {% end block %}
-</div>
-    
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+{% block script %}
+{% endblock %}
 </body>
 </html>

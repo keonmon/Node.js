@@ -7,7 +7,10 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 
 const app = express();
-app.set('port', process.env.PORT || 8001);
+app.set('port', process.env.PORT || 3000);
+
+// dotenv 설정은 가장 위에 쓰는것이 좋다.
+dotenv.config();
 
 const passportConfig = require('./passport');
 passportConfig();   //패스포트 설정
@@ -48,10 +51,10 @@ sequelize.sync({force:false})
 
 
 // 라우터 require
-const pageRouter = require('./routers/post');
+const pageRouter = require('./routers/page');
 const postRouter = require('./routers/post');
-const authRouter = require('./routers/post');
-const userRouter = require('./routers/post');
+const authRouter = require('./routers/auth');
+const userRouter = require('./routers/user');
 
 app.use('/', pageRouter);
 app.use('/post', postRouter);
@@ -66,6 +69,7 @@ app.use('/user', userRouter);
 app.use((req,res,next)=>{
     const error = new Error(`%{req.method} ${req.url} 라우터가 없습니다.`);
     error.status = 404;
+    
     next(error);
 });
 
@@ -73,6 +77,7 @@ app.use((err, req, res, next)=>{
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
+    console.log(err);
     res.render('error');
 
 });
