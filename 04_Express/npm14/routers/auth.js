@@ -3,11 +3,12 @@ const express = require('express');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const {isLoggedIn, isNotLoggedIn } = require('./middleware');
 
 const router = express.Router();
 
 //일반 회원가입 동작
-router.post('/join',async(req,res,next)=>{
+router.post('/join', isNotLoggedIn, async(req,res,next)=>{
     // const email = req.body.email;
     // const nick = req.body.nick;
     // const password = req.body.password;
@@ -40,7 +41,7 @@ router.post('/join',async(req,res,next)=>{
 });
 
 // 로그인 동작
-router.post('/login', (req,res,next)=>{
+router.post('/login', isNotLoggedIn, (req,res,next)=>{
     // passport 모듈로 로그인을 구현한다.
     console.log('/login 라우터 동작');
     passport.authenticate('local', (authError, user, info)=>{
@@ -72,9 +73,22 @@ router.post('/login', (req,res,next)=>{
     })(req,res,next)  // 미들웨어 속 미들웨어에는 (req,res,next)를 뒤에 붙인다.
 });
 
-router.get('/logout', (req,res)=>{
+//로그아웃
+router.get('/logout', isLoggedIn, (req,res)=>{
     req.logout();   // 세션 쿠키 삭제
     req.session.destroy();
+    res.redirect('/');
+});
+
+
+// 카카오톡으로 로그인
+router.get('/kakao', passport.authenticate('kakao'));
+// 스트레티지를 통해 카카오에 한번 갔다가 콜백을 받아 돌아온 뒤
+
+// 카카오 콜백
+router.get('/kakao/callback', passport.authenticate('kakao',{
+    failureRedirect:'/',
+}), (req,res)=>{
     res.redirect('/');
 });
 

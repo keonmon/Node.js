@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { Post, User, Hashtag } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middleware');
 
 const router = express.Router();
 
@@ -38,7 +39,7 @@ router.post('/img', upload.single('img'), (req,res,next)=>{
 const upload2 = multer();
 // 폼 내부에 <input type="file"이 있기 때문에 submit할 경우 파일을 한번 더 업로드하려고 동작한다.
 // 따라서 file업로드 동작을 생략하기 위해 비어있는 multer객체를 생성하고, upload2.none()를 한다.
-router.post('/', upload2.none(), async(req,res)=>{
+router.post('/', isLoggedIn, upload2.none(), async(req,res)=>{
     try {
         const currentPost = await Post.create({
             content: req.body.content,

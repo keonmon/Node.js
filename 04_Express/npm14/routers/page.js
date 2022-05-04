@@ -1,6 +1,7 @@
 const express = require('express');
 const { Post, User, Hashtag } = require('../models');
 const router = express.Router();
+const {isLoggedIn, isNotLoggedIn } = require('./middleware');
 
 // 로그인 페이지로 이동 ('/')
 router.get('/', async (req, res, next)=>{
@@ -17,9 +18,9 @@ router.get('/', async (req, res, next)=>{
             { 
                 title:'Nodegram',     // 타이틀
                 user:req.user,      // 로그인유저 객체
-                followerCount:0,    // 로그인 유저의 팔로워 수
-                followingCount:0,   // 로그인 유저의 팔로잉 수
-                followerIdList:[],  // 팔로워 리스트 (배열)
+                followerCount : req.user ? req.user. Followers.length: 0,    // 로그인 유저의 팔로워 수
+                followingCount : req.user ? req.user. Followings.length: 0,    // 로그인 유저의 팔로잉 수
+                followerIdList : req.user ? req.user. Followings.map(f=>f.id): [],  // 팔로워 리스트 (배열)
                 posts,           // 전체 포스팅 객체
             }
         );
@@ -30,7 +31,7 @@ router.get('/', async (req, res, next)=>{
 });
 
 // 회원가입 폼 블럭으로 이동
-router.get('/join', (req,res,next)=>{
+router.get('/join', isNotLoggedIn, (req,res,next)=>{
     res.render('join', 
         {
             title:'회원가입-Nodegram',
@@ -39,13 +40,13 @@ router.get('/join', (req,res,next)=>{
 });
 
 // 내 프로필로 이동
-router.get('/profile',(req,res)=>{
+router.get('/profile', isLoggedIn,(req,res)=>{
     res.render('profile',{
         title:'내 프로필 - Nodegram',
         user:req.user,
-        followerCount : 0,
-        followingCount:0,
-        followerIdList:[],
+        followerCount : req.user ? req.user. Followers.length: 0,    // 로그인 유저의 팔로워 수
+        followingCount : req.user ? req.user. Followings.length: 0,    // 로그인 유저의 팔로잉 수
+        followerIdList : req.user ? req.user. Followings.map(f=>f.id): [],  // 팔로워 리스트 (배열)
     });
 });
 
@@ -72,9 +73,9 @@ router.get('/hashtag', async (req,res,next)=>{
             title:`${query} | NodeGram`,
             posts,
             user:req.user,
-            followerCount:0,
-            followingCount:0,
-            followerIdList:[],
+            followerCount : req.user ? req.user. Followers.length: 0,    // 로그인 유저의 팔로워 수
+            followingCount : req.user ? req.user. Followings.length: 0,    // 로그인 유저의 팔로잉 수
+            followerIdList : req.user ? req.user. Followings.map(f=>f.id): [],  // 팔로워 리스트 (배열)
         });
     } catch (err) {
         console.error(err);

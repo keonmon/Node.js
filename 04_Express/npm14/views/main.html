@@ -39,6 +39,13 @@
             <div class="twit-author" style="font-weight:bold; font-family:Verdana;">
                 {{post.id}} &nbsp; -&nbsp; {{post.User.nick}}
             </div>
+
+            <!-- 팔로우 버튼 -->
+            {% if not followerIdList.includes(post.User.id) and post.User.id !== user.id %}
+                <!-- 전달된 팔로워 리스트에 현재 게시물 작성자가 없고, 나의 게시물이 아니라면 버튼을 표시한다-->
+                <button class="twit-follow">팔로우하기</button><br>
+            {% endif %}
+
             <!-- 이미지 -->
             {% if post.img %}
                 <!-- 현재 게시물의 이미지가 있다면 이미지태그 표시-->
@@ -63,12 +70,40 @@
         formData.append('img', e.target.files[0]);
         axios.post('/post/img', formData)
         .then((res)=>{
-            docu
             document.getElementById('img-url').value = res.data.url;
             document.getElementById('img-preview').src = res.data.url;
             document.getElementById('img-preview').style.display = 'inline';
         })
         .catch((err)=>{ console.error(err); });
     });
+
+    // class가 twit-follow인 셀렉터를 모두 선택한 후
+    // -> 그 태그들을 하나씩 tag에 전달하는 익명함수를 실행
+    document.querySelectorAll('.twit-follow').forEach( function (tag) {
+        // 전달된 tag를 통해 각 버튼에 모두 이벤트 리스너(click)를 붙여 사용한다.
+        tag.addEventListener('click', function(){
+            
+            const myid = document.querySelector('#my-id');  // 로그인 한 아이디
+            if( myid ){ // 로그인한 상태로 myid가 존재할 때만 실행한다.
+                
+                const userId = tag.parentNode.querySelector('.twit-user-id').value; // 게시물의 작성자
+                if( userId !== myid.value ){    // 로그인 유저와 작성자가 같지 않다면 실행
+                    
+                    const answer = confirm('팔로우 하시겠습니까?');
+                    if(answer){
+                        // 내가(로그인유저) 현재 게시물의 작성자를 팔로우하겠다. 라고 axios.post를 호출
+                        axios.post(`/user/follow/${userId}`)
+                        .then(()=>{
+                            location.reload();
+                        })
+                        .catch((err)=>{
+                            console.error(err);
+                        });
+                    }
+                }
+            }
+        });
+    });
+
 </script>
 {% endblock %}
