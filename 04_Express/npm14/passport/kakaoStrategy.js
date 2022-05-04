@@ -11,7 +11,7 @@ module.exports = () =>{
         // profile:계정이 동의한 항목들이 들어있는 카카오가 보내준 객체(카카오 이메일주소, 카카오 닉네임, 나이, 성명, 성별 등)
         try{
             const exUser = await User.findOne({
-                where : { snsid:profile.id, provider:'kakao' },   //카카오 아이디 검색
+                where : { snsid:profile.id, provider:'kakao' },   //카카오 아이디 검색 (이미 가입된 계정이 있는지 확인)
             });
             if(exUser){
                 done(null, exUser); // 아이디가 존재하면 검색결과 회원정보(exUser)를 갖고 바로 done(null, exUser)로 돌아가 로그인절차(세션쿠키저장 등)을 실행한다.

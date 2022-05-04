@@ -83,7 +83,7 @@ router.get('/logout', isLoggedIn, (req,res)=>{
 
 // 카카오톡으로 로그인
 router.get('/kakao', passport.authenticate('kakao'));
-// 스트레티지를 통해 카카오에 한번 갔다가 콜백을 받아 돌아온 뒤
+// 스트레티지를 통해 카카오에 한번 갔다가 콜백을 받아 돌아온 뒤 콜백을 실행
 
 // 카카오 콜백
 router.get('/kakao/callback', passport.authenticate('kakao',{
