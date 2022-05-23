@@ -53,7 +53,7 @@ console.log('path.parse() : ', path.parse(string));
 // name: '04_path'
 // }
 
-// 파일의 경로와 이름, 확장자를 제공하고, 경로-파일이름-확장자로 조합한다.
+// 파일의 경로와 이름, 확장자를 제공하고, 경로-파일명-확장자로 조합한다.
 console.log('path.format() : ', path.format({
     dir : 'D:\\Keonmon\\node_js',
     name : 'javascript_ex1',
@@ -73,18 +73,22 @@ console.log('path.isAsolute(./home) : ', path.isAbsolute('./home'));    // path.
 
 // 인수로 나오는 경로와 경로사이에 이동 경로를 표시한다.
 console.log('path.relative() : ', path.relative('D:\\JAVA01\\nodejs', 'D:\\')); // path.relative() :  ..\..
-// path.relative() : ..\..  -> 세번 부모폴더로 이동
+// ' ..\.. '  -> 세번 부모폴더로 이동
+
+console.log();
+console.log('--------------------------------------------------------')
 
 // 처음 경로부터 이후 나오는 경로로 이동한 폴더를 표시한다.
-console.log(__dirname); // D:\Java\00_JS\02_Internal_Module
+console.log('첫 인수 경로(__dirname) : ' + __dirname); // D:\Java\00_JS\02_Internal_Module
 console.log('path.join() : ', path.join(__dirname, '..', 'Keonmon', '.', '/node_js') ); // path.join() :  D:\Java\00_JS\Keonmon\node_js
-// 현재 폴더에서 부모폴더로 이동, heejook 폴더로 이동, 현재 폴더에서, node_js 폴더로 표시
-// 결과 : D:\heejoonk\heejoonk\node_js
+// 현재 폴더에서 부모폴더로 이동, Keonmon 폴더로 이동, 현재 폴더에서, node_js 폴더로 표시
+// 결과 : D:\Keonmon\Keonmon\node_js
 // 이동 경로에 해당 폴더가 없어도 경로이름은 조합되어 결과로 나온다.
 
-//--------------------------------------------------
+console.log();
 
-// resoleve와 join은 비슷하지만 '/' 표시를 절대경로냐 상대경로로 보느냐가 다르다.
-// resoleve는 절대경로로 보기 때문에 최종 결과 경로가 D:\node_js가 된다.
-// '/heejoonk'에 의해서 D:\heejoonk로 되었다가 '/node_js'에 의해서 다시 D:\node_js로 설정된다.
+// resoleve()와 join()은 비슷하지만 '/' 표시를 절대경로 또는 상대경로로 보느냐가 다르다.
+// resoleve()는 '/'를 절대경로로 판단하여 최종 결과 경로가 D:\node_js가 된다.
+console.log('첫 인수 경로(__dirname) : ' + __dirname); // D:\Java\00_JS\02_Internal_Module
 console.log('path.resolve() : ', path.resolve(__dirname, '..', '/Keonmon', '.', '/node_js') );  // path.resolve() :  D:\node_js
+// '/Keonmon'에 의해서 D:\Keonmon 되었다가 '/node_js'에 의해서 다시 D:\node_js로 설정된다.
