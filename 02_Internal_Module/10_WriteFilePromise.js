@@ -8,6 +8,8 @@ fs.writeFile('./writeMe3.txt', '안녕하세요. \n방갑습니다')
 })
 .then((data)=>{
     console.log(data.toString());
+    // 안녕하세요.
+    // 방갑습니다
 })
 .catch((err)=>{
     console.error(err);

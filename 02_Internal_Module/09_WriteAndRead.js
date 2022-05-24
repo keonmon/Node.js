@@ -16,4 +16,8 @@ fs.readFile('./writeMe2.txt', (err,data)=>{
         throw err;
     }
     console.log(data.toString());
+    // 안녕하세요. 
+    // 방갑습니다.
+    // 또오세요
+    // 내일뵐게요!
 });
