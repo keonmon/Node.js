@@ -9,16 +9,18 @@ const { traceDeprecation } = require('process');
 
 const parseCookies = (cookie='')=>
     cookie
-        .split(';')  // cookie1=test1;cookie2=test2  ';'으로 구분되어 전달된 쿠키를 분리한다.
+        .split(';')  // cookie1=test1;cookie2=test2  -> cookie1=test1 cookie2=test2 
+        // ';'으로 구분되어 전달된 쿠키를 분리한다.
+
         .map( v=>v.split('=') ) // v : cookie1 test1   v : cookie2 test2
-        // 분리된 쿠키들이 v에 전달되어 그들을 다시 '='로 분리된다.
-        // v에 분리된 쿠키가 저장된다
+        // v에 ';'로 분리된 쿠키들이 전달되고, 그들을 다시 '='로 분리하여 다시 v에 저장된다.
+        
         .reduce((acc, [k, v])=>{
             acc[k.trim()] = decodeURIComponent(v);
             return acc
         }, { });
         // 그렇게 분리된 둘은 k와 v에 전달되어 객체 형태를 이루고 acc에 저장되어 최종객체 형태의 데이터로 리턴된다
-        // 마지막 { } : 분리된 쿠키들이 [k, v]형태로 변형되어 "객체로 저장 취압된다"는 의미
+        // 마지막 { } : 분리된 쿠키들이 [k, v]형태로 변형되어 "객체로 저장 취합된다"는 의미
 
 http.createServer(async (req, res)=>{
 

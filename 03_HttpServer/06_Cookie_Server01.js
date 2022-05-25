@@ -4,7 +4,7 @@ const http = require('http');
 
 http.createServer((req, res)=>{
 
-    console.log(req.url, req.headers.cookie);// 클라이언트의 요청에는 header의 쿠키가 자동으로 동봉된다.
+    console.log(req.url, req.headers.cookie);   // 클라이언트의 요청에는 header의 쿠키가 자동으로 동봉된다.
     res.writeHead(200, {'Set-Cookie':'mycookie=test'});
     res.end('<h2>Hello Cookie</h2>');
 
@@ -13,14 +13,14 @@ http.createServer((req, res)=>{
 });
 
 //쿠키
-// request의 단점 : 누가(어떤 client)가 보낸 요청인지 알 수 없다.
+// request의 단점 : 누가(어떤 client가) 보낸 요청인지 알 수 없다.
 // request로 ip주소와 브러우저 정보 정도는 알 수 있다.
-// 이를 해결하기 위해 쿠키를 이요할 수 있다.
-// 쿠키 - 키 : 값의 싸응로 이루어져있는 데이터
+// 이를 해결하기 위해 쿠키를 이용할 수 있다.
+// 쿠키 - 키 : 값의 쌍으로 이루어져있는 데이터
 // 매 요청(request)마다 서버에 쿠키가 동봉되어 보내진다.
 // 서버는 쿠키를 읽어 누군지 파악한다.
 
-// 쿠리를 직업 넣어서 구현하려면
+// 쿠키를 직업 넣어서 구현하려면
 // writeHead메서드를 이용해서 요청 헤더에 입력한다.
 // 내용은 Set-Cookie로 브라우저에 쿠키를 설정하라고 명령한다.
 
